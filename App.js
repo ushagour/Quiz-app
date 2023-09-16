@@ -1,10 +1,29 @@
 import { StatusBar } from 'expo-status-bar';
-import {React,useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import { StyleSheet, Text, View,SafeAreaView,TouchableOpacity } from 'react-native';
 import { RadioButton } from 'react-native-paper';
 
 export default function App() {
 
+
+  useEffect(() => {
+    LoadData();
+  }, []);
+
+  const LoadData = async () => {
+    const apiUrl = 'https://quizzapi.jomoreschi.fr/api/v1/quiz?limit=5&category=tv_cinema&difficulty=facile';
+    try {
+      const response = await fetch(apiUrl); // Replace with your API endpoint
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+      const json = await response.json();
+      // setData(json);
+      console.log(json);
+    } catch (error) {
+      console.error('Error fetching data:', error);
+    }
+  };
 
 
 const [value, setValue] = useState('first');
@@ -13,6 +32,8 @@ const handleSubmit=(value)=>{
   alert(value)
   
 }
+
+
   return (
     <View style={styles.body}>
     <SafeAreaView style={styles.container}>
@@ -24,7 +45,7 @@ const handleSubmit=(value)=>{
       </View>
       <View style={styles.answer}>
 
-      <RadioButton.Group onPress={()=>handleSubmit(value)} onValueChange={value => setValue(value)} value={value}>
+      <RadioButton.Group onValueChange={value => setValue(value)} value={value}>
       <RadioButton.Item label="First item" value="first" />
       <RadioButton.Item label="Second item" value="second" />
     </RadioButton.Group>
@@ -33,7 +54,7 @@ const handleSubmit=(value)=>{
 
       </View>
     
-      <TouchableOpacity style={styles.submit}  onPress={() =>{handleSubmit}}>
+      <TouchableOpacity style={styles.submit}  onPress={() =>{handleSubmit(value)}}>
         <Text style={styles.play}>Submit</Text>
       </TouchableOpacity>
     </SafeAreaView>
@@ -58,7 +79,7 @@ const styles = StyleSheet.create({
     padding: 50,
   },
   question: {
-    fontSize: "20%",
+    fontSize: 20,
   },
   answer: {
     fontSize: 24,
@@ -96,8 +117,6 @@ const styles = StyleSheet.create({
     backgroundColor: 'rebeccapurple',
     paddingVertical: 10,
     paddingHorizontal: 20,
-    cursor: 'pointer',
-    border: 'none',
   },
 
 });
