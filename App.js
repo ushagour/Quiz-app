@@ -116,28 +116,22 @@ export default function App() {
    )}
 
 
-
-
-
-   
-
-
-
       </View>
-    
-      <TouchableOpacity style={styles.submit}  onPress={SubmitData}>
+      <Pressable
+             style={styles.submit}  onPress={SubmitData}>
         <Text style={styles.play}>Submit</Text>
-      </TouchableOpacity>
+            </Pressable>
+
+
 
 
       <Modal
         animationType="slide"
         transparent={true}
         visible={modalVisible}
-        onRequestClose={() => {
-          Alert.alert('Modal has been closed.');
-          setModalVisible(!modalVisible);
-        }}>
+        backdropStyle={styles.backdrop}
+
+        >
         <View style={styles.centeredView}>
           <View style={styles.modalView}>
             <Text style={styles.modalText}>your score is {correctCount} - {wrongCount}</Text>

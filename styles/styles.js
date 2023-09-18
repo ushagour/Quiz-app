@@ -14,15 +14,19 @@ const styles = StyleSheet.create({
       position: 'relative',
     },
     content: {
-      padding: 50,
+      padding: 20,
+    
     },
     question: {
       fontSize: 20,
+      fontWeight: 'bold',
+      fontStyle: 'italic'
     },
     answer: {
       fontSize: 24,
-      marginBottom: 20,
-      borderWidth: 2,
+      margin: 10,
+      borderWidth: 4,
+      borderRadius: 20,
       borderColor: "#20232a",  
     },
     submit: {
@@ -71,7 +75,7 @@ const styles = StyleSheet.create({
       alignItems: 'center',
       shadowColor: '#2f3e46',
       shadowOffset: {
-        width: 0,
+        width: 4,
         height: 2,
       },
       shadowOpacity:1,
@@ -87,7 +91,7 @@ const styles = StyleSheet.create({
       elevation: 2,
     },
     buttonClose: {
-      backgroundColor: '#2196F3',
+      backgroundColor: 'rebeccapurple',
     },
     textStyle: {
       color: 'white',
