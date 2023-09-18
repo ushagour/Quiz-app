@@ -8,9 +8,9 @@ export default function App() {
   
   const [isLoading, setIsLoading] = useState(true);
   const [data, setData] = useState([]);
-  let [question, setquestion] = useState();
-  let [goodanswer, setgoodanswer] = useState();
-  const [selectedanswer, setselectedanswer] = useState([]); 
+  const [question, setquestion] = useState('');
+  const [goodanswer, setgoodanswer] = useState('');
+  const [selectedanswer, setselectedanswer] = useState(null); 
   const [count, setCount] = useState(1);
 
 
@@ -29,9 +29,11 @@ export default function App() {
 
 
   const playAgain = ()=>{
+   setModalVisible(!modalVisible)
     setCount(0)
     setcorrectCount(0)
     setwrongCount(0)
+    setselectedanswer(null)
     LoadData()
 
   }
@@ -44,11 +46,12 @@ export default function App() {
         throw new Error('Network response was not ok');
       }
       setIsLoading(false);
+      setselectedanswer(null)
       const json = await response.json();
       setData([json.quizzes[0].answer,...json.quizzes[0].badAnswers]);
       setquestion(json.quizzes[0].question);
       setgoodanswer(json.quizzes[0].answer);
-      console.log(question);
+      // console.log(count);
       
 
     } catch (error) {
@@ -62,16 +65,18 @@ export default function App() {
 
   const  SubmitData=()=>{
 
+    // if (!selectedanswer.length) {
 
-    if(selectedanswer.length!==0){
+    if(selectedanswer!==null){
         selectedanswer===goodanswer?  setcorrectCount(prevCount => prevCount + 1) : setwrongCount(prevCount => prevCount + 1);
       setCount(prevCount => prevCount + 1);  
+       
       if (count <3) {
          LoadData();  
       } else {
         setModalVisible(true)
-        // alert(`your score is ${correctCount} - ${wrongCount}`);
-        // playAgain()
+       
+      
 
       }
     }
@@ -136,9 +141,9 @@ export default function App() {
           <View style={styles.modalView}>
             <Text style={styles.modalText}>your score is {correctCount} - {wrongCount}</Text>
             <Pressable
-              style={[styles.button, styles.buttonClose]}
-              onPress={() => setModalVisible(!modalVisible)}>
-              <Text style={styles.textStyle}>Hide Modal</Text>
+              style={[styles.play, styles.buttonClose]}
+              onPress={playAgain}>
+              <Text style={styles.textStyle}>Play Again </Text>
             </Pressable>
           </View>
         </View>
@@ -218,7 +223,7 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     padding: 35,
     alignItems: 'center',
-    shadowColor: '#000',
+    shadowColor: '#2f3e46',
     shadowOffset: {
       width: 0,
       height: 2,
@@ -228,6 +233,19 @@ const styles = StyleSheet.create({
     elevation: 5,
   },  modalText: {
     marginBottom: 15,
+    textAlign: 'center',
+  },
+  button: {
+    borderRadius: 20,
+    padding: 10,
+    elevation: 2,
+  },
+  buttonClose: {
+    backgroundColor: '#2196F3',
+  },
+  textStyle: {
+    color: 'white',
+    fontWeight: 'bold',
     textAlign: 'center',
   },
 });
